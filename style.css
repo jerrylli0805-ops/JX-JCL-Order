@@ -1,0 +1,116 @@
+/* 設定字體為 Inter (常用現代字體) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+body {
+    font-family: 'Inter', 'Microsoft JhengHei', 'sans-serif';
+    background-color: #0d1a26; /* 深藍色背景，模擬夜間機艙或高級感 */
+}
+.seat-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+}
+.seat-card:hover:not(.seat-card-disabled, .service-mode-active) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+}
+.disabled-option,
+:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f3f4f6;
+}
+.strikethrough {
+    text-decoration: line-through;
+    text-decoration-color: #ef4444; /* Red line */
+    text-decoration-thickness: 2px;
+}
+/* Style for clickable service items */
+.service-item-btn {
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
+}
+.service-item-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.beverage-checkbox-label {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.beverage-checkbox-label:hover {
+    background-color: #f9fafb;
+}
+.beverage-checkbox-label input:checked ~ span {
+    font-weight: 600;
+    color: #d97706;
+}
+.tag-btn {
+    transition: all 0.2s ease;
+}
+.tag-btn.selected {
+    background-color: #ca8a04; /* amber-600 */
+    color: white;
+    border-color: #ca8a04;
+}
+/* [NEW] Styles for order tabs */
+.order-tab-btn.active {
+    border-bottom-color: #ca8a04; /* amber-600 */
+    color: #ca8a04;
+    font-weight: 600;
+}
+.order-tab-btn:not(.active) {
+    border-bottom-color: transparent;
+    color: #6b7280; /* gray-500 */
+}
+
+/* --- [NEW] Styles for aisle-filtered view --- */
+
+/* 啟用走道過濾時，限制座位佈局的最大寬度並置中 */
+.aisle-view-active #seat-layout {
+    max-width: 800px; /* 限制寬度 */
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* 放大座位號 */
+.aisle-view-active .seat-card .text-2xl { 
+    font-size: 2.25rem; /* 36px */
+    line-height: 2.5rem;
+}
+
+/* 放大乘客姓名和主餐 */
+.aisle-view-active .seat-card .text-base { 
+    font-size: 1.25rem; /* 20px */
+    line-height: 1.75rem;
+}
+
+/* 放大飲料和備註 */
+.aisle-view-active .seat-card .text-sm { 
+    font-size: 1rem; /* 16px */
+    line-height: 1.5rem;
+}
+
+/* 放大次要備註文字 */
+ .aisle-view-active .seat-card .text-xs { 
+     font-size: 0.875rem; /* 14px */
+     line-height: 1.25rem;
+}
+
+/* 放大狀態圖示 */
+.aisle-view-active .seat-card [data-lucide] { 
+    width: 1.5rem; /* 24px */
+    height: 1.5rem;
+}
+
+/* 走道過濾按鈕選中時的樣式 */
+.aisle-view-btn.active {
+    background-color: #ca8a04; /* amber-600 */
+    color: white;
+    border-color: #ca8a04;
+}
+/* --- [END NEW] --- */	
