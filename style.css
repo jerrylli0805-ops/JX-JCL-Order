@@ -1,30 +1,36 @@
-/* 設定字體為 Inter (常用現代字體) */
+/* 設定字體 */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
 body {
     font-family: 'Inter', 'Microsoft JhengHei', 'sans-serif';
-    background-color: #0d1a26; /* 深藍色背景，模擬夜間機艙或高級感 */
+    background-color: #0d1a26;
 }
+
+/* --- 卡片基礎設定 --- */
 .seat-card {
     transition: all 0.3s ease;
     cursor: pointer;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
 }
+
 .seat-card:hover:not(.seat-card-disabled, .service-mode-active) {
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
 }
-.disabled-option,
-:disabled {
+
+.disabled-option, :disabled {
     opacity: 0.5;
     cursor: not-allowed;
     background-color: #f3f4f6;
 }
+
 .strikethrough {
     text-decoration: line-through;
-    text-decoration-color: #ef4444; /* Red line */
+    text-decoration-color: #ef4444;
     text-decoration-thickness: 2px;
 }
-/* Style for clickable service items */
+
+/* --- 按鈕與標籤樣式 --- */
 .service-item-btn {
     padding: 2px 4px;
     border-radius: 4px;
@@ -33,6 +39,7 @@ body {
 .service-item-btn:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+
 .beverage-checkbox-label {
     display: flex;
     align-items: center;
@@ -49,68 +56,96 @@ body {
     font-weight: 600;
     color: #d97706;
 }
-.tag-btn {
-    transition: all 0.2s ease;
-}
-.tag-btn.selected {
-    background-color: #ca8a04; /* amber-600 */
+
+.tag-btn.selected, .aisle-view-btn.active {
+    background-color: #ca8a04;
     color: white;
     border-color: #ca8a04;
 }
-/* [NEW] Styles for order tabs */
+
 .order-tab-btn.active {
-    border-bottom-color: #ca8a04; /* amber-600 */
+    border-bottom-color: #ca8a04;
     color: #ca8a04;
     font-weight: 600;
 }
 .order-tab-btn:not(.active) {
     border-bottom-color: transparent;
-    color: #6b7280; /* gray-500 */
+    color: #6b7280;
 }
 
-/* --- [NEW] Styles for aisle-filtered view --- */
+/* ==========================================================================
+   【全覽模式 (預設)】樣式設定 (全部縮小 2px)
+   ========================================================================== */
 
-/* 啟用走道過濾時，限制座位佈局的最大寬度並置中 */
+/* 1. 座號：34px 亮橘色 */
+.seat-card .text-2xl {
+    font-size: 34px !important;    /* 36px -> 34px */
+    line-height: 1.2 !important;
+    font-weight: 800 !important;
+    color: #fbbf24 !important;     /* Amber-400 */
+    margin-bottom: 5px !important;
+}
+
+/* 2. 乘客姓名：22px + 粗體 */
+.seat-card .text-base,
+.seat-card .text-lg {
+    font-size: 22px !important;    /* 24px -> 22px */
+    font-weight: 700 !important;   /* 粗體 */
+    color: #ffffff !important;
+    margin-bottom: 5px !important;
+    line-height: 1.4 !important;
+}
+
+/* 3. 餐點內容 (M1, DR1, 備註)：18px + 不要粗體 */
+.seat-card .text-sm,
+.seat-card .text-xs {
+    font-size: 18px !important;    /* 20px -> 18px */
+    font-weight: 400 !important;   /* 正常 (不要粗體) */
+    line-height: 1.5 !important;
+    color: #e5e7eb !important;     /* 淺灰色 */
+    display: block !important;
+}
+
+/* Icon 大小微調 */
+.seat-card svg[data-lucide] {
+    width: 18px !important;
+    height: 18px !important;
+}
+
+
+/* ==========================================================================
+   【走道模式 (Aisle View)】樣式設定 (全部縮小 2px)
+   ========================================================================== */
+
 .aisle-view-active #seat-layout {
-    max-width: 800px; /* 限制寬度 */
+    max-width: 800px;
     margin-left: auto;
     margin-right: auto;
 }
 
-/* 放大座位號 */
+/* 走道模式：座號 */
 .aisle-view-active .seat-card .text-2xl { 
-    font-size: 2.25rem; /* 36px */
-    line-height: 2.5rem;
+    font-size: 40px !important;    /* 42px -> 40px */
+    margin-bottom: 10px !important;
 }
 
-/* 放大乘客姓名和主餐 */
-.aisle-view-active .seat-card .text-base { 
-    font-size: 1.25rem; /* 20px */
-    line-height: 1.75rem;
+/* 走道模式：姓名 */
+.aisle-view-active .seat-card .text-base,
+.aisle-view-active .seat-card .text-lg { 
+    font-size: 26px !important;    /* 28px -> 26px */
+    line-height: 1.5 !important;
 }
 
-/* 放大飲料和備註 */
-.aisle-view-active .seat-card .text-sm { 
-    font-size: 1rem; /* 16px */
-    line-height: 1.5rem;
+/* 走道模式：餐點內容 */
+.aisle-view-active .seat-card .text-sm, 
+.aisle-view-active .seat-card .text-xs { 
+    font-size: 22px !important;    /* 24px -> 22px */
+    line-height: 1.8 !important;
+    font-weight: 500 !important;
 }
 
-/* 放大次要備註文字 */
- .aisle-view-active .seat-card .text-xs { 
-     font-size: 0.875rem; /* 14px */
-     line-height: 1.25rem;
-}
-
-/* 放大狀態圖示 */
+/* 走道模式：Icon */
 .aisle-view-active .seat-card [data-lucide] { 
-    width: 1.5rem; /* 24px */
-    height: 1.5rem;
+    width: 26px !important;
+    height: 26px !important;
 }
-
-/* 走道過濾按鈕選中時的樣式 */
-.aisle-view-btn.active {
-    background-color: #ca8a04; /* amber-600 */
-    color: white;
-    border-color: #ca8a04;
-}
-/* --- [END NEW] --- */	

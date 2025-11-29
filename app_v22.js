@@ -45,35 +45,26 @@ const ICAO_SPML_CODES = {
 };
 
 const MENUS = {
-    'TPE-NRT': {
-        meal_1: [
-            { code: 'MHT1', name: 'Grilled Prime Beef Short Ribs', chinese: '胡同醬燒Prime牛小排', dessert: 'HT-dessert' },
-            { code: 'MPK1', name: 'Spiced Roast Pork Shoulder', chinese: '香料烤豬肩義式寬麵', dessert: 'INT dessert' },
-            { code:'MFI1', name: 'Seared Halibut w/ Truffle Potatoes', chinese: '炙烤比目魚松露洋芋', dessert: 'INT dessert' },
-            { code: 'MBF1', name: 'Wafu Style Braised Beef Strips', chinese: '和風大跟燉牛肉條', dessert: 'ASIAN dessert' },
-        ],
-        
-    },
-    'TPE-SIN': {
-        meal_1: [
-            { code: 'MCK1', name: 'Herb Roasted Pork Shoulder Chop, Fettuccine, Creamy Tomato Caper Sauce', chinese: '香料烤豬肩排、義式燉菜、番茄酸豆奶油醬', dessert: 'INT dessert' },
-            { code: 'MSF1', name: 'Grilled Halibut, Truffle Potato, Wild Mushroom Cream Sauce', chinese: '炙烤比目魚、松露洋芋、野菇奶油醬', dessert: 'INT dessert' },
-            { code: 'MCF1', name: 'Abalone and Peeled Chili Pepper Chicken Millet Congee', chinese: '鮑魚剝皮辣椒雞粥/小米飯', dessert: 'AS dessert' },
-            { code: 'MHT1', name: 'HUTONG Barbeque Prime Beef Short Rib and Chicken Thigh Donburi', chinese: '胡同燒烤 Prime 牛小排與雞腿雙丼', dessert: 'HT dessert' },
-        ],
-       
-    },
+    // --- SS: Super Short (One Tray) ---
     'TPE-HKG': {
         meal_1: [
-            { code: 'MPK1', name: 'Spiced Roast Pork Shoulder', chinese: '香料烤豬肩義式寬麵', dessert: 'ONE TRAY SERVICE' },
-            { code: 'MFI1', name: 'Seared Halibut w/ Truffle Potatoes', chinese: '炙烤比目魚松露洋芋', dessert: 'ONE TRAY SERVICE' },
-            { code: 'MSE1', name: 'STARLUX Edition', chinese: '星宇精選佳餚', dessert: 'ONE TRAY SERVICE' },
+            { code: 'MPK1', name: 'Spiced Roast Pork Shoulder', chinese: '香料烤豬肩義式寬麵', dessert: 'ONE TRAY' },
+            { code: 'MFI1', name: 'Seared Halibut', chinese: '炙烤比目魚松露洋芋', dessert: 'ONE TRAY' },
+            { code: 'MSE1', name: 'STARLUX Edition', chinese: '星宇精選佳餚', dessert: 'ONE TRAY' },
         ],
-    },
-    'TPE-SHI': {
+        // SS 航線沒有 appetizers，也沒有 meal_2
+        'TPE-SHI': {
         meal_1: [
             { code: 'MFI1', name: 'Seared Halibut w/ Truffle Potatoes', chinese: '燻鮭魚法式三明治 ', dessert: 'ONE TRAY SERVICE' },
         ],
+         'HKG-TPE': {
+        meal_1: [
+            { code: 'MSF1', name: 'Pan-Seared Scallop, Dried Scallop Egg White Fried Rice', chinese: '嫩煎干貝、瑤柱蛋白炒飯', dessert: 'ONE TRAY SERVICE' },
+            { code: 'MCK1', name: 'Pan Fried Chicken, Truffle Cream Linguine', chinese: '香煎雞腿、奶油松露醬義大利寬麵', dessert: 'ONE TRAY SERVICE' },
+            { code: 'MSE1', name: 'STARLUX Edition', chinese: '星宇精選佳餚', dessert: 'ONE TRAY SERVICE' },
+        ],
+       
+    },
         
     },
     'TPE-OKA': {
@@ -84,28 +75,54 @@ const MENUS = {
         ],
       
     },
-    'TPE-LAX': {
+    },
+
+    // --- S: Short (Full Course, No Choice of App) ---
+    'TPE-NRT': {
         meal_1: [
-            { code: 'LOB1', name: 'Lobster Thermidor', chinese: '法式龍蝦', dessert: 'INT dessert' },
-            { code: 'WAG1', name: 'Wagyu Beef Steak', chinese: '和牛牛排', dessert: 'INT dessert' },
-            { code: 'SOU1', name: 'Chicken Soup w/ Noodles', chinese: '元盅雞湯麵', dessert: 'AS dessert' },
+            { code: 'MHT1', name: 'Grilled Prime Beef Short Ribs', chinese: '胡同醬燒Prime牛小排', dessert: 'HT-dessert' },
+            { code: 'MPK1', name: 'Spiced Roast Pork Shoulder', chinese: '香料烤豬肩義式寬麵', dessert: 'INT dessert' },
+            { code: 'MFI1', name: 'Seared Halibut w/ Truffle Potatoes', chinese: '炙烤比目魚松露洋芋', dessert: 'INT dessert' },
+            { code: 'MBF1', name: 'Wafu Style Braised Beef Strips', chinese: '和風大跟燉牛肉條', dessert: 'ASIAN dessert' },
         ],
-        meal_2: [ 
-            { code: 'BFN1', name: 'Breakfast Noodle Soup', chinese: '清燉牛肉麵', dessert: 'Breakfast Fruit' },
-            { code: 'CRO1', name: 'Croissant w/ Scrambled Eggs', chinese: '可頌佐炒蛋', dessert: 'Breakfast Fruit' },
-            { code: 'CON1', name: 'Congee w/ Abalone', chinese: '鮑魚雞肉粥', dessert: 'Breakfast Fruit' },
+    },
+
+    // --- M: Medium (Appetizer Choice) ---
+    'TPE-SIN': {
+        meal_1: [
+            { code: 'MCK1', name: 'Herb Roasted Pork Shoulder', chinese: '香料烤豬肩排', dessert: 'INT dessert' },
+            { code: 'MSF1', name: 'Grilled Halibut', chinese: '炙烤比目魚', dessert: 'INT dessert' },
+            { code: 'MCF1', name: 'Abalone Congee', chinese: '鮑魚剝皮辣椒雞粥', dessert: 'AS dessert' },
+            { code: 'MHT1', name: 'HUTONG Beef', chinese: '胡同燒烤牛小排', dessert: 'HT dessert' },
+        ],
+        // [關鍵設定] M 航線加入前菜選項
+        appetizers: [
+            { code: 'SOUP', name: 'Cream of Mushroom Soup', chinese: '松露蘑菇濃湯' },
+            { code: 'SALAD', name: 'Smoked Salmon Caesar Salad', chinese: '煙燻鮭魚凱薩沙拉' }
         ]
     },
-    'HKG-TPE': {
-        meal_1: [
-            { code: 'MSF1', name: 'Pan-Seared Scallop, Dried Scallop Egg White Fried Rice', chinese: '嫩煎干貝、瑤柱蛋白炒飯', dessert: 'ONE TRAY SERVICE' },
-            { code: 'MCK1', name: 'Pan Fried Chicken, Truffle Cream Linguine', chinese: '香煎雞腿、奶油松露醬義大利寬麵', dessert: 'ONE TRAY SERVICE' },
-            { code: 'MSE1', name: 'STARLUX Edition', chinese: '星宇精選佳餚', dessert: 'ONE TRAY SERVICE' },
-        ],
-       
-    },
-};
 
+    // --- L: Long (Appetizer Choice + 2nd Meal) ---
+    'TPE-LAX': {
+        meal_1: [
+            { code: 'MBF1', name: 'Braised Short Rib, Cauliflower, Hibiscus, Lovage-ST', chinese: '慢燉牛小排·白花椰·洛神花·山當歸', dessert: 'Dessert' },
+            { code: 'MSF1', name: 'Pan Seared Halibut, Fettuccine Pasta, Daikon Creamy Butter Sauce', chinese: '嫩煎比目魚,義式寬扁麵·奶油蘿蔔醬', dessert: 'Dessert' },
+            { code: 'MCK1', name: 'Roasted Chicken Thigh, Mushroom Pearl Barley Rice, Garlic Butter Sauce', chinese: '爐烤雞腿排·香菇薏米飯·蒜香奶油醬', dessert: 'Dessert' },
+            { code: 'MVG1', name: 'Sesame-Flavoured Lions Mane Mushroom Steak with Seasnal Vegetables', chinese: '麻香猴頭菇彩蔬鈺膳', dessert: 'Dessert' },
+        ],
+        // [關鍵設定] L 航線有第二餐
+        meal_2: [ 
+            { code: 'BFN1', name: 'Breakfast Noodle Soup', chinese: '清燉牛肉麵', dessert: 'Fruit' },
+            { code: 'CRO1', name: 'Croissant w/ Scrambled Eggs', chinese: '可頌佐炒蛋', dessert: 'Fruit' },
+            { code: 'CON1', name: 'Congee w/ Abalone', chinese: '鮑魚雞肉粥', dessert: 'Fruit' },
+        ],
+        // [關鍵設定] L 航線也有前菜選項
+        appetizers: [
+            { code: 'MSA1', name: 'Nicoise Salad, Milkfish, Banyuls Vinaigrette-ST', chinese: '尼斯沙拉·虱目魚,紅酒油醋汁' },
+            { code: 'MSA+SOUP', name: 'Fruity Garden Waltz Salad + Creamy White Asparagus Soup, Garlic Crouton', chinese: '果漾繽紛圓舞曲' }
+        ]
+    }
+};
 const AIRCRAFT_CONFIGS = {
     'A321neo': { 
         name: 'Airbus A321neo',
@@ -138,13 +155,25 @@ const AIRCRAFT_CONFIGS = {
 };
 
 const ROUTES = [
-    { id: 'TPE-NRT', name: 'Taipei - NRT/KIX/SDJ/NGO/UKB' },
-    { id: 'TPE-SHI', name: 'Taipei - SHI' },
-    { id: 'TPE-HKG', name: 'Taipei - HKG/MFM/CRK/MNL' },
-    { id: 'TPE-OKA', name: 'Taipei - OKA/FUK/KMJ' },
-    { id: 'TPE-LAX', name: 'Taipei - LAX (Long Haul)' },
-    { id: 'HKG-TPE', name: 'HKG-TPE' },
-        { id: 'TPE-SIN', name:'Taipei-SIN/KUL'},
+    // --- SS (Super Short) 超短程 ---
+    // 包含 HKG, MFM, FUK (如您所述，這些是 SS)
+    // 這些航線通常是 One Tray Service，沒有前菜選擇
+    { id: 'TPE-HKG', name: 'Taipei - HKG/MFM/FUK (SS)', type: 'SS' },
+
+    // --- S (Short) 短程 ---
+    // 包含 NRT, KIX, SDJ (共用 TPE-NRT 菜單)
+    // 這些航線有完整的熱餐，但通常沒有 Soup/Salad 二選一
+    { id: 'TPE-NRT', name: 'Taipei - NRT/KIX/SDJ (S)', type: 'S' },
+
+    // --- M (Medium) 中程 ---
+    // 包含 SIN, KUL, CGK
+    // [新功能] 這些航線會有 Soup/Salad 的選擇
+    { id: 'TPE-SIN', name: 'Taipei - SIN/KUL/CGK (M)', type: 'M' },
+
+    // --- L (Long) 長程 ---
+    // 包含 LAX, SFO
+    // [新功能] 這些航線有 Soup/Salad + 第二餐
+    { id: 'TPE-LAX', name: 'Taipei - LAX/SFO (L)', type: 'L' },
 ];
 
 // [MODIFIED] Replaced with user's new BEVERAGE_CATEGORIES
@@ -252,6 +281,11 @@ const ALL_BEVERAGES = Object.values(BEVERAGE_CATEGORIES).flat();
 const createInitialOrder = (id) => ({
     id: id, lastName: '', title: 'Mr.', status: 'PENDING', 
     
+    // [NEW] 加入前菜狀態
+    appetizerChoice: '', 
+    appetizerServed: false, 
+    appetizerSkipped: false,
+
     // 1st Meal
     mealCode: '', mealName: 'N/A', isSPML: false,
     mealServed: false, mealSkipped: false,
@@ -276,6 +310,7 @@ let mealInventory_1 = {}, mealInventory_2 = {}, flightNumber = '', currentSeatId
 let isEditingInventory = false;
 let countdownInterval = null, serviceTarget = null, currentServiceItemIndex = null;
 let activeMeals_1 = [], activeMeals_2 = [], activeAircraftConfig = {};
+let appetizerInventory = {}; // 新增前菜庫存變數
 let currentRoute = '', audioCtx;
 let currentAircraftType = '';
 let currentServicePhase = 'MEAL_1'; // 'MEAL_1' or 'MEAL_2'
@@ -642,7 +677,10 @@ function renderSeatLayout() {
                    // Static view (Order Mode or fully completed service)
                     itemsContainer.innerHTML = ''; 
                     if(isDND) itemsContainer.insertAdjacentHTML('beforeend', '<p class="text-lg font-bold text-red-300 mt-1">DND</p>');
-                    
+                    if (order.appetizerChoice) {
+                        const appClass = order.appetizerServed ? 'strikethrough' : (order.appetizerSkipped ? 'text-yellow-400' : '');
+                        itemsContainer.innerHTML += `<div class="text-sm mt-1 font-semibold ${textClass} ${appClass}">App: ${order.appetizerChoice}</div>`;
+                    }   
                     // Meal 1: 維持 text-base (標準大小)
                     if (mealCode) {
                         itemsContainer.innerHTML += `<div class="text-base font-semibold mt-1 ${textClass} ${mealSkipped ? 'text-yellow-400' : ''} ${mealServed ? 'strikethrough' : ''}">M1: ${mealCode}</div>`;
@@ -673,6 +711,21 @@ function renderSeatLayout() {
                     // 這裡處理還有項目沒送完的狀態 (如 2K)
                     
                     if (currentServicePhase === 'MEAL_1') {
+
+                        const isAppetizerDone = order.appetizerServed || order.appetizerSkipped;
+                        // Show Appetizer
+                if (order.appetizerChoice && !isAppetizerDone) {
+                    const el = document.createElement('div');
+                    el.className = `text-sm font-semibold ${textClass}`; 
+                    // 判斷是否處於可操作模式 (serviceItemsClickable)
+                    // 加入 'service-item-btn' class 讓滑鼠游標變手指
+                    el.innerHTML = `<span class="${serviceItemsClickable ? 'service-item-btn block' : 'block opacity-70'}">App: ${order.appetizerChoice}</span>`;
+                    // 綁定點擊事件！
+                    if(serviceItemsClickable) {
+                    el.querySelector('span').onclick = e => handleServiceClick(e, seatId, 'appetizer');
+                    }
+                    itemsContainer.appendChild(el);
+    }
                         // Show Meal 1, Drinks 1, Dessert
                         if (mealCode && !isMeal1Done) {
                             const el = document.createElement('div');
@@ -772,10 +825,15 @@ function renderSeatLayout() {
     renderOrderSummaryAggregate();
 }
 
+// [FIXED] renderOrderSummaryAggregate - Splits beverages by Meal 1 and Meal 2
 function renderOrderSummaryAggregate() {
     appElements.summaryList.innerHTML = '';
     const mealCounts = {};
-    const beverageCounts = {};
+    
+    // [FIX] 拆分飲料計數器
+    const beverageCounts_1 = {}; // 第一餐飲料統計
+    const beverageCounts_2 = {}; // 第二餐飲料統計
+    
     let totalOrderedSeats = 0;
     let seatsWithOrders = new Set();
 
@@ -786,6 +844,7 @@ function renderOrderSummaryAggregate() {
                 seatsWithOrders.add(order.id);
             }
             
+            // 統計主餐 (維持原本邏輯)
             if (order.mealCode) {
                 const mealIdentifier = order.isSPML ? `SPML-1 (${order.mealCode})` : order.mealCode;
                 mealCounts[mealIdentifier] = (mealCounts[mealIdentifier] || 0) + 1;
@@ -795,12 +854,13 @@ function renderOrderSummaryAggregate() {
                 mealCounts[mealIdentifier] = (mealCounts[mealIdentifier] || 0) + 1;
             }
 
+            // [FIX] 分開統計飲料
             order.beverages.forEach(bev => {
-                beverageCounts[bev.name] = (beverageCounts[bev.name] || 0) + 1;
+                beverageCounts_1[bev.name] = (beverageCounts_1[bev.name] || 0) + 1;
             });
             if(order.beverages_2) {
                 order.beverages_2.forEach(bev => {
-                    beverageCounts[bev.name] = (beverageCounts[bev.name] || 0) + 1;
+                    beverageCounts_2[bev.name] = (beverageCounts_2[bev.name] || 0) + 1;
                 });
             }
         }
@@ -814,7 +874,7 @@ function renderOrderSummaryAggregate() {
     }
     appElements.emptySummaryMessage.style.display = 'none';
 
-    // --- Meals Summary (保持不變) ---
+    // --- A. Meals Summary (主餐統計區塊 - 保持不變) ---
     const mealSummaryDiv = document.createElement('div');
     mealSummaryDiv.className = 'p-3 bg-gray-700 rounded-lg border-l-4 border-amber-500';
     mealSummaryDiv.innerHTML = `<h3 class="font-bold text-lg text-amber-300 mb-2">Meals Summary (${totalOrderedSeats} seats)</h3>`;
@@ -845,65 +905,91 @@ function renderOrderSummaryAggregate() {
     appElements.summaryList.appendChild(mealSummaryDiv);
 
 
-    // --- Beverages Summary (新增功能：分類排序 + 打勾) ---
+    // --- [FIX] Helper Function: 渲染飲料列表 ---
+    // 這是一個內部小函數，用來分別產生第一餐和第二餐的 HTML
+    const renderBeverageSection = (counts, title, phaseKey) => {
+        const container = document.createElement('div');
+        // 區塊標題
+        container.innerHTML = `<h4 class="font-bold text-md text-amber-100 mt-4 mb-2 border-b border-gray-600 pb-1">${title}</h4>`;
+        
+        const ul = document.createElement('ul');
+        ul.className = 'space-y-2 text-gray-200 text-sm';
+        let hasItems = false;
+
+        for (const [category, items] of Object.entries(BEVERAGE_CATEGORIES)) {
+            const activeItems = items.filter(b => counts[b.full]);
+            
+            if (activeItems.length > 0) {
+                hasItems = true;
+                const catHeader = document.createElement('li');
+                catHeader.className = 'text-xs font-bold text-gray-400 uppercase mt-3 mb-1';
+                catHeader.textContent = category;
+                ul.appendChild(catHeader);
+
+                activeItems.forEach(b => {
+                    const count = counts[b.full];
+                    // [IMPORTANT] 使用 phaseKey (M1 or M2) 來區分打勾狀態
+                    // 這樣第一餐的可樂打勾，不會影響到第二餐的可樂
+                    const uniqueKey = `${phaseKey}_${b.full}`; 
+                    const isDone = beverageSummaryDoneState[uniqueKey] || false;
+                    
+                    const li = document.createElement('li');
+                    li.className = 'flex items-center justify-between p-2 rounded hover:bg-gray-600 transition cursor-pointer select-none';
+                    
+                    const textClass = isDone ? 'text-gray-500 line-through' : 'text-gray-100 font-medium';
+                    const iconClass = isDone ? 'text-green-400' : 'text-gray-500';
+                    const iconName = isDone ? 'check-circle-2' : 'circle';
+                    const bgClass = isDone ? 'bg-gray-800' : '';
+
+                    li.className += ` ${bgClass}`;
+                    li.innerHTML = `
+                        <span class="${textClass}">${b.full}: ${count}</span>
+                        <button class="focus:outline-none">
+                            <i data-lucide="${iconName}" class="w-5 h-5 ${iconClass}"></i>
+                        </button>
+                    `;
+
+                    li.onclick = () => {
+                        beverageSummaryDoneState[uniqueKey] = !beverageSummaryDoneState[uniqueKey];
+                        renderOrderSummaryAggregate(); 
+                        lucide.createIcons();
+                    };
+
+                    ul.appendChild(li);
+                });
+            }
+        }
+        
+        if (!hasItems) {
+            const emptyMsg = document.createElement('p');
+            emptyMsg.className = 'text-gray-500 italic text-sm';
+            emptyMsg.textContent = 'No beverages ordered.';
+            container.appendChild(emptyMsg);
+        } else {
+            container.appendChild(ul);
+        }
+        return container;
+    };
+
+    // --- B. Beverages Summary (飲料統計區塊) ---
     const beverageSummaryDiv = document.createElement('div');
     beverageSummaryDiv.className = 'p-3 bg-gray-700 rounded-lg border-l-4 border-amber-500';
-    beverageSummaryDiv.innerHTML = `<h3 class="font-bold text-lg text-amber-300 mb-2">Beverages Summary</h3>`;
+    beverageSummaryDiv.innerHTML = `<h3 class="font-bold text-lg text-amber-300">Beverages Summary</h3>`;
     
-    const beverageUl = document.createElement('ul');
-    beverageUl.className = 'space-y-2 text-gray-200 text-sm';
+    // 1. 渲染第一餐飲料
+    beverageSummaryDiv.appendChild(renderBeverageSection(beverageCounts_1, "1st Meal Beverages", "M1"));
 
-    // [SORTING LOGIC] 依照 BEVERAGE_CATEGORIES 的原始順序遍歷
-    // 這樣 Water 就會因為在設定檔的第一個而排在最上面，其他類別也會被歸類在一起
-    for (const [category, items] of Object.entries(BEVERAGE_CATEGORIES)) {
-        // 檢查該類別是否有被點到的飲料
-        const activeItems = items.filter(b => beverageCounts[b.full]);
-        
-        if (activeItems.length > 0) {
-            // 加入類別標題 (讓分類更清楚)
-            const catHeader = document.createElement('li');
-            catHeader.className = 'text-xs font-bold text-gray-400 uppercase mt-3 mb-1 border-b border-gray-600 pb-1';
-            catHeader.textContent = category;
-            beverageUl.appendChild(catHeader);
+    // 2. 渲染第二餐飲料 (只有長程線或有第二餐飲料時才顯示)
+    // 判斷方式：如果有設定第二餐主餐 (activeMeals_2) 或者 已經有人點了第二餐飲料
+    const hasMeal2Config = activeMeals_2.length > 0;
+    const hasMeal2Orders = Object.keys(beverageCounts_2).length > 0;
 
-            // 顯示該類別下的飲料
-            activeItems.forEach(b => {
-                const count = beverageCounts[b.full];
-                const isDone = beverageSummaryDoneState[b.full] || false;
-                
-                const li = document.createElement('li');
-                li.className = 'flex items-center justify-between p-2 rounded hover:bg-gray-600 transition cursor-pointer select-none';
-                
-                // 根據狀態設定樣式 (打勾 vs 未完成)
-                const textClass = isDone ? 'text-gray-500 line-through' : 'text-gray-100 font-medium';
-                const iconClass = isDone ? 'text-green-400' : 'text-gray-500';
-                const iconName = isDone ? 'check-circle-2' : 'circle';
-                const bgClass = isDone ? 'bg-gray-800' : '';
-
-                li.className += ` ${bgClass}`;
-                li.innerHTML = `
-                    <span class="${textClass}">${b.full}: ${count}</span>
-                    <button class="focus:outline-none">
-                        <i data-lucide="${iconName}" class="w-5 h-5 ${iconClass}"></i>
-                    </button>
-                `;
-
-                // 點擊事件：切換狀態
-                li.onclick = () => {
-                    beverageSummaryDoneState[b.full] = !beverageSummaryDoneState[b.full];
-                    renderOrderSummaryAggregate(); // 重新渲染以更新狀態
-                    lucide.createIcons();
-                };
-
-                beverageUl.appendChild(li);
-            });
-        }
+    if (hasMeal2Config || hasMeal2Orders) {
+        beverageSummaryDiv.appendChild(renderBeverageSection(beverageCounts_2, "2nd Meal Beverages", "M2"));
     }
 
-    beverageSummaryDiv.appendChild(beverageUl);
     appElements.summaryList.appendChild(beverageSummaryDiv);
     
-    // 確保圖示重新生成
     setTimeout(() => lucide.createIcons(), 0);
 }
 
@@ -912,6 +998,21 @@ function renderServiceSummary(order) {
     let html = '<div class="space-y-3 p-4 bg-gray-50 rounded-lg">';
     html += `<h4 class="text-lg font-semibold text-gray-800">Service Summary for ${order.id}</h4>`;
     
+    // Appetizer
+    if (order.appetizerChoice) {
+        // 嘗試找出全名，找不到就顯示代碼
+        const routeApps = MENUS[currentRoute]?.appetizers || [];
+        const appObj = routeApps.find(a => a.code === order.appetizerChoice);
+        const appName = appObj ? appObj.name : order.appetizerChoice;
+        
+        // 計算狀態與顏色
+        const status = order.appetizerServed ? 'Served' : (order.appetizerSkipped ? 'Skipped' : 'Pending');
+        const statusColor = status === 'Served' ? 'text-green-600' : (status === 'Pending' ? 'text-yellow-600' : 'text-yellow-600');
+
+        // 將狀態顯示在後方括號中
+        html += `<p class="border-b pb-2"><strong>Appetizer:</strong> ${appName} (<span class="${statusColor}">${status}</span>)</p>`;
+    }
+
     // Meal 1
     if (order.mealCode) {
         const status = order.mealServed ? 'Served' : (order.mealSkipped ? 'Skipped' : 'Pending');
@@ -948,7 +1049,8 @@ function renderServiceSummary(order) {
         html += '<p><strong>Beverages (2nd):</strong></p><ul class="list-disc list-inside pl-4 text-sm">';
         order.beverages_2.forEach(b => {
             const status = b.served ? 'Served' : (b.skipped ? 'Skipped' : 'Pending');
-            html += `<li>${b.name}${b.style ? ` (${b.style})` : ''} - <span class="${status === 'Served' ? 'text-green-6An-600' : 'text-yellow-600'}">${status}</span></li>`;
+            // [FIXED] 修正了這裡的 typo: text-green-6An-600 -> text-green-600
+            html += `<li>${b.name}${b.style ? ` (${b.style})` : ''} - <span class="${status === 'Served' ? 'text-green-600' : 'text-yellow-600'}">${status}</span></li>`;
         });
         html += '</ul>';
     }
@@ -968,42 +1070,103 @@ function setupInitialSelectors() {
     appElements.spmlSelect2.innerHTML = spmlOptions;
 }
 
+// [MODIFIED] 根據航線類別 (SS, S, M, L, UL) 自動判斷欄位
 function setupInventoryInputs() {
-    const selectedRoute = appElements.routeSelect.value;
-    const routeMenus = MENUS[selectedRoute] || { meal_1: [], meal_2: [] };
+    const selectedRouteId = appElements.routeSelect.value;
+    const routeInfo = ROUTES.find(r => r.id === selectedRouteId);
+    
+    // 防呆機制
+    const routeMenus = MENUS[selectedRouteId] || { meal_1: [], meal_2: [], appetizers: [] };
     
     activeMeals_1 = routeMenus.meal_1 || [];
     activeMeals_2 = routeMenus.meal_2 || [];
+    const activeAppetizers = routeMenus.appetizers || [];
     
-    appElements.inventoryInputsContainer.innerHTML = '';
-    activeMeals_1.forEach(meal => {
-        const inventoryItem = document.createElement('div');
-        inventoryItem.className = 'flex items-center space-x-3';
-        inventoryItem.innerHTML = `
-            <label class="w-2/3 text-gray-700 font-medium truncate" title="${meal.name}">${meal.code} - ${meal.chinese}</label>
-            <input type="number" id="qty-1-${meal.code}" min="0" value="0" class="w-1/3 p-2 border border-gray-300 rounded-lg text-center">
-        `;
-        appElements.inventoryInputsContainer.appendChild(inventoryItem);
-    });
+    // --- 核心判斷邏輯 ---
+    // 1. M, L, UL 航線 -> 需要前菜 (Appetizer)
+    const needsAppetizer = routeInfo && ['M', 'L', 'UL'].includes(routeInfo.type);
+    
+    // 2. L, UL 航線 -> 需要第二餐 (Meal 2)
+    const needsSecondMeal = routeInfo && ['L', 'UL'].includes(routeInfo.type);
 
-    const container2 = document.getElementById('inventory-inputs-container-2');
-    container2.innerHTML = '';
-    if (activeMeals_2.length > 0) {
-        activeMeals_2.forEach(meal => {
-            const inventoryItem = document.createElement('div');
-            inventoryItem.className = 'flex items-center space-x-3';
-            inventoryItem.innerHTML = `
-                <label class="w-2/3 text-gray-700 font-medium truncate" title="${meal.name}">${meal.code} - ${meal.chinese}</label>
-                <input type="number" id="qty-2-${meal.code}" min="0" value="0" class="w-1/3 p-2 border border-gray-300 rounded-lg text-center">
+    appElements.inventoryInputsContainer.innerHTML = '';
+    
+    // --- A. 建置前菜輸入框 (Soup/Salad) ---
+    if (needsAppetizer && activeAppetizers.length > 0) {
+        appElements.inventoryInputsContainer.innerHTML += `<h4 class="font-bold text-amber-600 mb-2 border-b pb-1">Appetizers (Soup/Salad)</h4>`;
+        activeAppetizers.forEach(appetizer => {
+            const existingQty = (isEditingInventory && appetizerInventory) ? (appetizerInventory[appetizer.code] || 0) : 0;
+            
+            const div = document.createElement('div');
+            div.className = 'flex justify-between items-center bg-amber-50 p-3 rounded border mb-2';
+            div.innerHTML = `
+                <div class="flex-1">
+                    <span class="font-bold text-gray-800 block">${appetizer.name}</span>
+                    <span class="text-xs text-gray-500">${appetizer.chinese}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-gray-400">${appetizer.code}</span>
+                    <input type="number" id="qty-appetizer-${appetizer.code}" 
+                        class="w-20 p-2 border rounded text-center font-bold text-lg focus:ring-amber-500 focus:border-amber-500" 
+                        min="0" value="${existingQty}">
+                </div>
             `;
-            container2.appendChild(inventoryItem);
+            appElements.inventoryInputsContainer.appendChild(div);
         });
-        container2.classList.remove('hidden');
-    } else {
-        container2.classList.add('hidden');
+    }
+
+    // --- B. 建置第一餐輸入框 (所有航線都有) ---
+    if (activeMeals_1.length > 0) {
+        appElements.inventoryInputsContainer.innerHTML += `<h4 class="font-bold text-gray-600 mb-2 border-b pb-1 mt-4">1st Meal Inventory</h4>`;
+        activeMeals_1.forEach(meal => {
+            const existingQty = (isEditingInventory && mealInventory_1) ? (mealInventory_1[meal.code] || 0) : 0;
+
+            const div = document.createElement('div');
+            div.className = 'flex justify-between items-center bg-gray-50 p-3 rounded border mb-2';
+            div.innerHTML = `
+                <div class="flex-1">
+                    <span class="font-bold text-gray-700 block">${meal.code}</span>
+                    <span class="text-xs text-gray-500">${meal.name}</span>
+                </div>
+                <input type="number" id="qty-1-${meal.code}" 
+                       class="w-20 p-2 border rounded text-center font-bold text-lg focus:ring-blue-500 focus:border-blue-500" 
+                       min="0" value="${existingQty}">
+            `;
+            appElements.inventoryInputsContainer.appendChild(div);
+        });
+    }
+
+    // --- C. 建置第二餐輸入框 (僅 L, UL) ---
+    const container2 = document.getElementById('inventory-inputs-container-2');
+    if (container2) {
+        // 嚴格判斷：只有 L/UL 且 菜單真的有資料才顯示
+        const showSecondMeal = needsSecondMeal && activeMeals_2.length > 0;
+        
+        container2.innerHTML = '';
+        container2.classList.toggle('hidden', !showSecondMeal);
+        
+        if (showSecondMeal) {
+            container2.innerHTML += `<h4 class="font-bold text-gray-600 mb-2 border-b pb-1 mt-4">2nd Meal Inventory</h4>`;
+            
+            activeMeals_2.forEach(meal => {
+                const existingQty = (isEditingInventory && mealInventory_2) ? (mealInventory_2[meal.code] || 0) : 0;
+
+                const div = document.createElement('div');
+                div.className = 'flex justify-between items-center bg-gray-50 p-3 rounded border mb-2';
+                div.innerHTML = `
+                    <div class="flex-1">
+                        <span class="font-bold text-gray-700 block">${meal.code}</span>
+                        <span class="text-xs text-gray-500">${meal.name}</span>
+                    </div>
+                    <input type="number" id="qty-2-${meal.code}" 
+                           class="w-20 p-2 border rounded text-center font-bold text-lg focus:ring-blue-500 focus:border-blue-500" 
+                           min="0" value="${existingQty}">
+                `;
+                container2.appendChild(div);
+            });
+        }
     }
 }
-
 // [MODIFIED] handleSaveInventory
 function handleSaveInventory() {
     flightNumber = appElements.flightNumberInput.value.trim().toUpperCase();
@@ -1054,6 +1217,21 @@ function handleSaveInventory() {
         const value = parseInt(input.value, 10);
         if (isNaN(value) || value < 0) allValid = false;
         mealInventory_2[meal.code] = value;
+    });
+
+    // 儲存前菜 (Appetizer) 庫存
+    appetizerInventory = {}; // 重置
+    const routeMenusApp = MENUS[currentRoute] || { appetizers: [] };
+    const activeAppetizers = routeMenusApp.appetizers || [];
+
+    activeAppetizers.forEach(app => {
+        // 嘗試讀取前菜輸入框 (id 格式為 qty-appetizer-CODE)
+        const input = document.getElementById(`qty-appetizer-${app.code}`);
+        if (input) {
+            const value = parseInt(input.value, 10);
+            if (isNaN(value) || value < 0) allValid = false;
+            appetizerInventory[app.code] = value;
+        }
     });
 
     if (allValid) {
@@ -1310,7 +1488,64 @@ function openOrderModal(seatId) {
         
         setupMealOptions(appElements.mealOptionsContainer, activeMeals_1, mealInventory_1, 'meal_1', order.mealCode, order.status);
         setupBeverageOptions(appElements.beverageOptionsContainer, order.beverages, 'beverage_1');
+        // ... (以上是 setupMealOptions 和 setupBeverageOptions 的代碼)
 
+        // [MODIFIED] 插入前菜選擇區塊 (M, L, UL 航線)
+        const routeInfo = ROUTES.find(r => r.id === currentRoute);
+        const needsAppetizer = routeInfo && ['M', 'L', 'UL'].includes(routeInfo.type);
+        const activeAppetizers = MENUS[currentRoute]?.appetizers || [];
+        
+        // 取得或建立容器
+        let appContainer = document.getElementById('appetizer-options-container');
+        if (!appContainer) { 
+            appContainer = document.createElement('div');
+            appContainer.id = 'appetizer-options-container';
+            appContainer.className = 'mt-4 border-t pt-4 mb-4 hidden';
+            // 插入到第一餐選項的下方
+            appElements.mealOptionsWrapper.appendChild(appContainer);
+        }
+
+        // 判斷是否顯示前菜選項
+        // 條件：航線需要 + 菜單有設定 + 不是 SPML (SPML通常沒有選前菜)
+        if (needsAppetizer && activeAppetizers.length > 0 && !order.isSPML) {
+            appContainer.classList.remove('hidden');
+            appContainer.innerHTML = `<label class="block text-sm font-bold text-amber-700 mb-2">Appetizer (前菜)</label>`;
+            
+            const grid = document.createElement('div');
+            grid.className = 'grid grid-cols-2 gap-3';
+            
+            activeAppetizers.forEach(app => {
+                // 計算剩餘庫存
+                const totalOrdered = orders.filter(o => o.appetizerChoice === app.code).length;
+                const remaining = (appetizerInventory[app.code] || 0) - totalOrdered;
+                const isSelected = order.appetizerChoice === app.code;
+                const isDisabled = remaining <= 0 && !isSelected; // 沒庫存且沒選過才鎖定
+
+                const label = document.createElement('label');
+                label.className = `flex items-center p-3 border rounded-lg cursor-pointer ${isDisabled ? 'bg-gray-100 opacity-60' : (isSelected ? 'bg-amber-50 border-amber-500' : 'hover:bg-gray-50')}`;
+                label.innerHTML = `
+                    <input type="radio" name="appetizer_choice" value="${app.code}" class="form-radio h-4 w-4 text-amber-600" ${isDisabled ? 'disabled' : ''} ${isSelected ? 'checked' : ''}>
+                    <div class="ml-2">
+                        <span class="block text-sm font-bold text-gray-800">${app.name}</span>
+                        <span class="block text-xs ${remaining <= 0 ? 'text-red-500 font-bold' : 'text-gray-500'}">Qty: ${remaining}</span>
+                    </div>
+                `;
+                grid.appendChild(label);
+            });
+            
+            // 加入 "None" 選項
+            const noAppLabel = document.createElement('label');
+            noAppLabel.className = 'flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50';
+            noAppLabel.innerHTML = `
+                <input type="radio" name="appetizer_choice" value="" class="form-radio h-4 w-4 text-gray-400" ${!order.appetizerChoice ? 'checked' : ''}>
+                <span class="ml-2 text-sm text-gray-600">None / Default</span>
+            `;
+            grid.appendChild(noAppLabel);
+
+            appContainer.appendChild(grid);
+        } else {
+            appContainer.classList.add('hidden');
+        }
         if (isLongHaul) {
             setupMealOptions(appElements.mealOptionsContainer2, activeMeals_2, mealInventory_2, 'meal_2', order.mealCode_2, order.status);
             setupBeverageOptions(appElements.beverageOptionsContainer2, order.beverages_2, 'beverage_2');
@@ -1382,7 +1617,7 @@ function syncSPML(isSPML) {
     }
 }
 
-// [MODIFIED] handleSubmitOrder - Refactored to fix SPML/Tab bug
+// [FIXED] handleSubmitOrder - Solves SPML Appetizer issue & Phantom Meal 2 issue
 function handleSubmitOrder() {
     const orderToUpdate = getOrder(currentSeatId);
     if (!orderToUpdate) {
@@ -1392,12 +1627,16 @@ function handleSubmitOrder() {
     }
     
     const isTab1Active = appElements.orderTab1.classList.contains('active');
-    const isLongHaul = activeMeals_2.length > 0;
+    const isLongHaul = activeMeals_2.length > 0; // 判斷是否為長程線 (有第二餐)
     const isFullOrderMode = appElements.submitOrderBtn.textContent.includes('Confirm');
     const show = (el, visible) => el.classList.toggle('hidden', !visible);
 
+    // [判斷航線是否需要前菜] (用於修復 SPML 前菜問題)
+    const routeInfo = ROUTES.find(r => r.id === currentRoute);
+    const needsAppetizer = routeInfo && ['M', 'L', 'UL'].includes(routeInfo.type);
+
     if (!isFullOrderMode) {
-        // Service Mode - Add Beverages
+        // --- Service Mode (Add Beverage) Logic ---
         const phase = currentServicePhase;
         const container = (phase === 'MEAL_1') ? appElements.beverageOptionsContainer : appElements.beverageOptionsContainer2;
         const checkboxName = (phase === 'MEAL_1') ? 'beverage_1' : 'beverage_2';
@@ -1422,14 +1661,13 @@ function handleSubmitOrder() {
         showMessage(`${newBeverages.length} beverage(s) added for seat ${currentSeatId} (${phase}).`, false);
     
     } else {
-        // Order Mode - Confirming Order
+        // --- Order Mode (Confirm Order) Logic ---
         const selectedStatus = document.querySelector('input[name="service-status"]:checked').value;
         const passengerLastName = appElements.lastNameInput.value.trim();
         if (!passengerLastName && selectedStatus !== 'DND' && selectedStatus !== 'PENDING') { 
             showMessage('Passenger Last Name is required.', true); return; 
         }
 
-        // Save universal info (name, status, etc.)
         orderToUpdate.status = selectedStatus;
         orderToUpdate.lastName = passengerLastName;
         orderToUpdate.title = appElements.titleSelect.value;
@@ -1443,8 +1681,6 @@ function handleSubmitOrder() {
 
         if (selectedStatus === 'ORDERED' || selectedStatus === 'DELAYED' || selectedStatus === 'DND') {
             
-            // [FIXED] Unified save logic. Always save data from both tabs.
-            
             // --- Save Meal 1 ---
             const isSPML = appElements.spmlCheckbox.checked;
             orderToUpdate.isSPML = isSPML;
@@ -1452,14 +1688,24 @@ function handleSubmitOrder() {
             if(isSPML) {
                 const spmlCode = getSPMLCode(appElements.spmlSelect, appElements.spmlInputOther);
                 if(!spmlCode) { showMessage('SPML Code (1st Meal) is required.', true); return; }
+                
                 orderToUpdate.mealCode = spmlCode;
                 orderToUpdate.mealName = 'Special Meal';
-                // [NEW] Auto-set SPML 2
-                orderToUpdate.isSPML_2 = true;
-                orderToUpdate.mealCode_2 = spmlCode;
-                orderToUpdate.mealName_2 = 'Special Meal';
+                
+                // [FIX 2] 只有在長程線 (isLongHaul) 才自動同步 SPML 到第二餐
+                // 這樣短程線就不會出現 phantom Meal 2 了
+                if (isLongHaul) {
+                    orderToUpdate.isSPML_2 = true;
+                    orderToUpdate.mealCode_2 = spmlCode;
+                    orderToUpdate.mealName_2 = 'Special Meal';
+                } else {
+                    orderToUpdate.isSPML_2 = false;
+                    orderToUpdate.mealCode_2 = ''; // 確保清空
+                    orderToUpdate.mealName_2 = 'N/A';
+                }
 
             } else {
+                // 一般餐點邏輯
                 const selectedMealRadio = document.querySelector('input[name="meal_1"]:checked');
                 if (selectedMealRadio) {
                     if (selectedMealRadio.value === 'NO MEAL') {
@@ -1471,11 +1717,10 @@ function handleSubmitOrder() {
                         orderToUpdate.mealName = mealDetails ? mealDetails.name : 'N/A';
                         orderToUpdate.mealServed = false; orderToUpdate.mealSkipped = false; orderToUpdate.dessertSkipped = false;
                     }
-                } else if(selectedStatus === 'ORDERED' && !orderToUpdate.mealCode) { // Only default if not set
+                } else if(selectedStatus === 'ORDERED' && !orderToUpdate.mealCode) { 
                     orderToUpdate.mealCode = 'NO MEAL'; orderToUpdate.mealName = 'No Meal';
                     orderToUpdate.mealServed = true; orderToUpdate.mealSkipped = true; orderToUpdate.dessertSkipped = true;
                 }
-                // [NEW] Unset SPML 2 if Meal 1 is not SPML
                 orderToUpdate.isSPML_2 = false;
             }
             
@@ -1489,11 +1734,28 @@ function handleSubmitOrder() {
                 }
                 return beverage;
             });
+
+            // --- [FIX 1] 前菜 (Appetizer) 儲存邏輯修正 ---
+            if (!orderToUpdate.isSPML) {
+                // 如果是一般餐，讀取 Radio 選項
+                const appRadio = document.querySelector('input[name="appetizer_choice"]:checked');
+                if (appRadio) {
+                    orderToUpdate.appetizerChoice = appRadio.value;
+                } else {
+                    orderToUpdate.appetizerChoice = '';
+                }
+            } else {
+                // 如果是 SPML，且該航線需要前菜 (M/L/UL)，則自動將前菜設為 SPML 代碼
+                if (needsAppetizer) {
+                    orderToUpdate.appetizerChoice = orderToUpdate.mealCode; // e.g. 'NLML'
+                } else {
+                    orderToUpdate.appetizerChoice = '';
+                }
+            }
             
             // --- Save Meal 2 & Beverages 2 (if long haul) ---
             if (isLongHaul) {
-                // Save Meal 2 *only if* Meal 1 was not SPML (which auto-sets Meal 2)
-                if (!orderToUpdate.isSPML) {
+                if (!orderToUpdate.isSPML) { // 如果第一餐不是 SPML (是 SPML 的話上面已經同步過了)
                      const isSPML2 = appElements.spmlCheckbox2.checked;
                      orderToUpdate.isSPML_2 = isSPML2;
                     if(isSPML2) {
@@ -1513,14 +1775,14 @@ function handleSubmitOrder() {
                                 orderToUpdate.mealName_2 = mealDetails ? mealDetails.name : 'N/A';
                                 orderToUpdate.mealServed_2 = false; orderToUpdate.mealSkipped_2 = false;
                             }
-                        } else if(selectedStatus === 'ORDERED' && !orderToUpdate.mealCode_2) { // Only default if not set
+                        } else if(selectedStatus === 'ORDERED' && !orderToUpdate.mealCode_2) {
                             orderToUpdate.mealCode_2 = 'NO MEAL'; orderToUpdate.mealName_2 = 'No Meal';
                             orderToUpdate.mealServed_2 = true; orderToUpdate.mealSkipped_2 = true;
                         }
                     }
                 }
                 
-                // Save Beverages 2 (always save this, regardless of SPML)
+                // Save Beverages 2
                 const selectedBeverageNodes2 = appElements.orderModal.querySelectorAll('input[name="beverage_2"]:checked');
                 orderToUpdate.beverages_2 = Array.from(selectedBeverageNodes2).map(node => {
                     const beverage = { name: node.value, served: false, skipped: false };
@@ -1541,24 +1803,17 @@ function handleSubmitOrder() {
     }
     renderSeatLayout(); 
     
-    // Refined modal closing logic
-    if (!isFullOrderMode) { // Service mode
+    // Close Logic
+    if (!isFullOrderMode) { 
         closeModal();
     } else if (isLongHaul && isTab1Active && !orderToUpdate.isSPML) {
-       // Order mode, long haul, tab 1, non-SPML -> switch to tab 2
-        
-        // 1. 切換分頁樣式
+        // Auto-switch to tab 2 for Long Haul
         appElements.orderTab1.classList.remove('active');
         appElements.orderTab2.classList.add('active');
-        
-        // 2. 切換顯示內容
         show(appElements.orderTabContent1, false);
         show(appElements.orderTabContent2, true);
-        
-        // [新增這行] 強制視窗捲動回到最上方 (表頭)
         appElements.orderModal.querySelector('.bg-white').scrollTop = 0;
     } else {
-        // All other cases (order mode short haul, or tab 2, or SPML) -> close
         closeModal();
     }
 }
@@ -1612,12 +1867,14 @@ function renderServiceBeverageMenu() {
 }
 
 // [MODIFIED] handleServiceAction
+// [MODIFIED] handleServiceAction - Fixed brace nesting issues
 function handleServiceAction(action) {
     const order = getOrder(currentSeatId);
     if (!order) return;
     appElements.serviceActionModal.classList.add('hidden');
     
     if (action === 'Served' || action === 'Skip') {
+        // --- 修正區域 A：Served/Skip 邏輯 ---
         if (serviceTarget === 'meal_1') {
             order.mealServed = action === 'Served';
             order.mealSkipped = action === 'Skip';
@@ -1627,7 +1884,13 @@ function handleServiceAction(action) {
                 order.dessertServed = action === 'Served';
                 order.dessertSkipped = action === 'Skip';
             }
-        } else if (serviceTarget === 'meal_2') {
+        } 
+        // [修正] 把 appetizer 移到 meal_1 的括號外面，並用 else if 接續
+        else if (serviceTarget === 'appetizer') {
+            order.appetizerServed = action === 'Served';
+            order.appetizerSkipped = action === 'Skip';
+        } 
+        else if (serviceTarget === 'meal_2') {
             order.mealServed_2 = action === 'Served';
             order.mealSkipped_2 = action === 'Skip';
         } else if (serviceTarget === 'drink_1' && currentServiceItemIndex !== null) {
@@ -1640,14 +1903,24 @@ function handleServiceAction(action) {
             order.dessertServed = action === 'Served';
             order.dessertSkipped = action === 'Skip';
         }
+
     } else if (action === 'Cancel') {
+         // --- 修正區域 B：Cancel 邏輯 ---
          if (serviceTarget === 'meal_1') {
             // Cancel Meal 1 (resets whole order for simplicity)
             const lastName = order.lastName, title = order.title;
             Object.assign(order, createInitialOrder(order.id), { lastName, title });
             showMessage(`Order for ${order.id} has been Cancelled.`, false);
             if (currentMode === MODES.SERVICE_MODE) setTimeout(() => openOrderModal(order.id), 100);
-         } else if (serviceTarget === 'meal_2') {
+         }
+         // [修正] 把 appetizer 移到 meal_1 的括號外面
+         else if (serviceTarget === 'appetizer') {
+            order.appetizerChoice = '';
+            order.appetizerServed = false;
+            order.appetizerSkipped = false;
+            showMessage(`Appetizer for ${order.id} has been removed.`, false);
+         } 
+         else if (serviceTarget === 'meal_2') {
             // Cancel Meal 2
             order.mealCode_2 = ''; order.mealName_2 = 'N/A';
             order.isSPML_2 = false;
@@ -1661,7 +1934,11 @@ function handleServiceAction(action) {
             showMessage(`Beverage (2nd) for ${order.id} has been removed.`, false);
          }
     }
-    showMessage(`${order.id}'s ${serviceTarget} marked as ${action}.`, false);
+    
+    // 更新狀態訊息與畫面
+    if (action !== 'Cancel') {
+        showMessage(`${order.id}'s ${serviceTarget} marked as ${action}.`, false);
+    }
     renderSeatLayout();
 }
 
@@ -2054,12 +2331,12 @@ function openEditInventory() {
 }
 
 function handleSaveInventoryEdit() {
-    // Read values from inputs and update mealInventory_1/_2 only
     let allValid = true;
     const routeMenus = MENUS[currentRoute] || { meal_1: [], meal_2: [] };
     activeMeals_1 = routeMenus.meal_1 || [];
     activeMeals_2 = routeMenus.meal_2 || [];
 
+    // 1. 讀取主餐 1
     const inv1 = {};
     activeMeals_1.forEach(meal => {
         const input = document.getElementById(`qty-1-${meal.code}`);
@@ -2067,6 +2344,8 @@ function handleSaveInventoryEdit() {
         if (isNaN(value) || value < 0) allValid = false;
         inv1[meal.code] = value || 0;
     });
+
+    // 2. 讀取主餐 2
     const inv2 = {};
     activeMeals_2.forEach(meal => {
         const input = document.getElementById(`qty-2-${meal.code}`);
@@ -2075,10 +2354,26 @@ function handleSaveInventoryEdit() {
         inv2[meal.code] = value || 0;
     });
 
+    // 3. 讀取前菜
+    const routeMenusApp = MENUS[currentRoute] || { appetizers: [] };
+    const activeAppetizers = routeMenusApp.appetizers || [];
+    const invApp = {};
+
+    activeAppetizers.forEach(app => {
+        const input = document.getElementById(`qty-appetizer-${app.code}`);
+        if (input) {
+            const value = parseInt(input && input.value, 10);
+            if (isNaN(value) || value < 0) allValid = false;
+            invApp[app.code] = value || 0;
+        }
+    });
+
     if (!allValid) { showMessage('Please ensure all quantities are valid non-negative numbers.', true); return; }
 
+    // 更新全域變數
     mealInventory_1 = inv1;
     mealInventory_2 = inv2;
+    appetizerInventory = invApp;
 
     // Refresh UI
     renderSeatLayout();
@@ -2087,9 +2382,11 @@ function handleSaveInventoryEdit() {
     }
     showMessage('Inventory updated.', false);
 
-    // Close modal and restore controls/button texts
+    // Close modal
     appElements.inventoryModal.classList.replace('flex', 'hidden');
-        if (appElements.editInventoryBtn) appElements.editInventoryBtn.classList.remove('hidden');
+    if (appElements.editInventoryBtn) appElements.editInventoryBtn.classList.remove('hidden');
+    
+    // Restore controls
     appElements.flightNumberInput.disabled = false;
     appElements.aircraftSelect.disabled = false;
     appElements.routeSelect.disabled = false;
@@ -2169,4 +2466,5 @@ function init() {
     updateClock();
     lucide.createIcons();
     }
+
     window.onload = init;
