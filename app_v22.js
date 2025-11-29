@@ -280,10 +280,13 @@ let currentRoute = '', audioCtx;
 let currentAircraftType = '';
 let currentServicePhase = 'MEAL_1'; // 'MEAL_1' or 'MEAL_2'
 let currentAisleView = 'ALL'; // [NEW] State for aisle view: 'ALL', 'L_SIDE', 'R_SIDE'
+let beverageSummaryDoneState = {}; // [NEW] 紀錄飲料備餐完成狀態
 
 
 // --- DOM 元素快取 ---
 const appElements = {
+    serviceModeActions: document.getElementById('service-mode-actions'),
+    btnAddBeverage: document.getElementById('btn-add-beverage'),
     seatLayoutContainer: document.getElementById('seat-layout-container'), 
     seatLayout: document.getElementById('seat-layout'), 
     summarySection: document.getElementById('summary-section'),
@@ -636,40 +639,47 @@ function renderSeatLayout() {
                 const serviceItemsClickable = currentMode === MODES.SERVICE_MODE && status === 'ORDERED' && !serviceClosed;
                 
                 if (isFullyStatic) {
-                    // Static view (Order Mode or fully completed service)
+                   // Static view (Order Mode or fully completed service)
                     itemsContainer.innerHTML = ''; 
                     if(isDND) itemsContainer.insertAdjacentHTML('beforeend', '<p class="text-lg font-bold text-red-300 mt-1">DND</p>');
                     
+                    // Meal 1: 維持 text-base (標準大小)
                     if (mealCode) {
-                        itemsContainer.innerHTML += `<div class="text-base font-semibold mt-1 ${textClass} ${mealSkipped ? 'text-yellow-400' : ''} ${mealServed ? 'strikethrough' : ''}">Meal 1: ${mealCode}</div>`;
+                        itemsContainer.innerHTML += `<div class="text-base font-semibold mt-1 ${textClass} ${mealSkipped ? 'text-yellow-400' : ''} ${mealServed ? 'strikethrough' : ''}">M1: ${mealCode}</div>`;
                     }
+                    // Meal 2: 維持 text-base
                     if (mealCode_2) {
-                        itemsContainer.innerHTML += `<div class="text-base font-semibold mt-1 ${textClass} ${mealSkipped_2 ? 'text-yellow-400' : ''} ${mealServed_2 ? 'strikethrough' : ''}">Meal 2: ${mealCode_2}</div>`;
+                        itemsContainer.innerHTML += `<div class="text-base font-semibold mt-1 ${textClass} ${mealSkipped_2 ? 'text-yellow-400' : ''} ${mealServed_2 ? 'strikethrough' : ''}">M2: ${mealCode_2}</div>`;
                     }
 
-                    const allDrinks = beverages.map(b => `<span class="${b.skipped ? 'text-yellow-400' : ''} ${b.served ? 'strikethrough' : ''}">${getBeverageShort(b.name)}${b.style ? ` (${b.style})` : ''}</span>`).join(', ');
-                    if(beverages.length > 0) itemsContainer.innerHTML += `<div class="text-sm mt-1 ${textClass}">Drinks 1: ${allDrinks || 'None'}</div>`;
+                    // Drinks 1: 改回 text-sm (原本的大小)，保留 DR1 縮寫
+                    const allDrinks = beverages.map(b => `<span class="${b.skipped ? 'text-yellow-400' : ''} ${b.served ? 'strikethrough' : ''}">${getBeverageShort(b.name)}${b.style ? `(${b.style})` : ''}</span>`).join(', ');
+                    if(beverages.length > 0) itemsContainer.innerHTML += `<div class="text-sm mt-1 ${textClass}">DR1: ${allDrinks || 'None'}</div>`;
                     
-                    const allDrinks_2 = (beverages_2 || []).map(b => `<span class="${b.skipped ? 'text-yellow-400' : ''} ${b.served ? 'strikethrough' : ''}">${getBeverageShort(b.name)}${b.style ? ` (${b.style})` : ''}</span>`).join(', ');
-                    if(beverages_2 && beverages_2.length > 0) itemsContainer.innerHTML += `<div class="text-sm mt-1 ${textClass}">Drinks 2: ${allDrinks_2 || 'None'}</div>`;
+                    // Drinks 2: 改回 text-sm，保留 DR2 縮寫
+                    const allDrinks_2 = (beverages_2 || []).map(b => `<span class="${b.skipped ? 'text-yellow-400' : ''} ${b.served ? 'strikethrough' : ''}">${getBeverageShort(b.name)}${b.style ? `(${b.style})` : ''}</span>`).join(', ');
+                    if(beverages_2 && beverages_2.length > 0) itemsContainer.innerHTML += `<div class="text-sm mt-1 ${textClass}">DR2: ${allDrinks_2 || 'None'}</div>`;
                     
+                    // Dessert: 改回 text-sm，保留 Dst 縮寫
                     if (!isOneTrayService && order.mealCode !== 'NO MEAL') {
                         let dessertText;
                         if (isSPML) dessertText = order.mealCode;
                         else dessertText = meal ? meal.dessert : 'N/A';
-                        itemsContainer.innerHTML += `<div class="text-sm mt-1 ${textClass} ${dessertSkipped ? 'text-yellow-400' : ''} ${dessertServed ? 'strikethrough' : ''}">Dessert: ${dessertText}</div>`;
+                        itemsContainer.innerHTML += `<div class="text-sm mt-1 ${textClass} ${dessertSkipped ? 'text-yellow-400' : ''} ${dessertServed ? 'strikethrough' : ''}">Dst: ${dessertText}</div>`;
                     }
 
-                } else { 
+               } else { 
                     // [MODIFIED] Service Mode In Progress (Phase-dependent view)
+                    // 這裡處理還有項目沒送完的狀態 (如 2K)
                     
                     if (currentServicePhase === 'MEAL_1') {
                         // Show Meal 1, Drinks 1, Dessert
                         if (mealCode && !isMeal1Done) {
                             const el = document.createElement('div');
                             el.className = `text-base font-semibold ${textClass}`;
-                            el.innerHTML = `<span class="${serviceItemsClickable ? 'service-item-btn block' : 'block opacity-70'}">Meal 1: ${mealCode}</span>`;
-                            if(serviceItemsClickable) el.querySelector('span').onclick = e => handleServiceClick(e, seatId, 'meal_1'); // 'meal_1'
+                            // [修改] Meal 1 -> M1
+                            el.innerHTML = `<span class="${serviceItemsClickable ? 'service-item-btn block' : 'block opacity-70'}">M1: ${mealCode}</span>`;
+                            if(serviceItemsClickable) el.querySelector('span').onclick = e => handleServiceClick(e, seatId, 'meal_1'); 
                             itemsContainer.appendChild(el);
                         }
                         
@@ -677,9 +687,10 @@ function renderSeatLayout() {
                             pendingBeverages.forEach(bev => {
                                 const bevIndex = beverages.findIndex(b => b === bev);
                                 const el = document.createElement('div');
-                                el.className = `text-sm ${textClass}`;
-                                let styleText = bev.style ? ` (${bev.style})` : '';
-                                el.innerHTML = `<span class="${serviceItemsClickable ? 'service-item-btn block' : 'block opacity-70'}">Drink 1: ${getBeverageShort(bev.name)}${styleText}</span>`;
+                                el.className = `text-sm ${textClass}`; // 維持 text-sm
+                                let styleText = bev.style ? `(${bev.style})` : ''; // 去除括號前空格
+                                // [修改] Drink 1 -> DR1
+                                el.innerHTML = `<span class="${serviceItemsClickable ? 'service-item-btn block' : 'block opacity-70'}">DR1: ${getBeverageShort(bev.name)}${styleText}</span>`;
                                 if(serviceItemsClickable) el.querySelector('span').onclick = e => handleServiceClick(e, seatId, 'drink_1', bevIndex);
                                 itemsContainer.appendChild(el);
                             });
@@ -687,11 +698,12 @@ function renderSeatLayout() {
 
                         if (isMeal1Done && allBeveragesDone && !isDessertDone && !isOneTrayService && order.mealCode !== 'NO MEAL') {
                             const el = document.createElement('div');
-                            el.className = `text-base font-semibold ${textClass}`;
-                            let dessertText = 'Dessert';
-                            if (isSPML) dessertText += ` (${mealCode})`;
-                            else if(meal) dessertText += ` (${meal.dessert})`;
-                            el.innerHTML = `<span class="${serviceItemsClickable ? 'service-item-btn block' : 'block opacity-70'}">${dessertText}</span>`;
+                            el.className = `text-base font-semibold ${textClass}`; // 維持 text-base
+                            let dessertText = ''; // [修改] Dessert -> Dst
+                            if (isSPML) dessertText += `${mealCode}`;
+                            else if(meal) dessertText += `${meal.dessert}`;
+                            // [修改] Label 改為 Dst
+                            el.innerHTML = `<span class="${serviceItemsClickable ? 'service-item-btn block' : 'block opacity-70'}">Dst: ${dessertText}</span>`;
                             if(serviceItemsClickable) el.querySelector('span').onclick = e => handleServiceClick(e, seatId, 'dessert');
                             itemsContainer.appendChild(el);
                         }
@@ -701,8 +713,9 @@ function renderSeatLayout() {
                         if (mealCode_2 && !isMeal2Done) {
                             const el = document.createElement('div');
                             el.className = `text-base font-semibold ${textClass}`;
-                            el.innerHTML = `<span class="${serviceItemsClickable ? 'service-item-btn block' : 'block opacity-70'}">Meal 2: ${mealCode_2}</span>`;
-                            if(serviceItemsClickable) el.querySelector('span').onclick = e => handleServiceClick(e, seatId, 'meal_2'); // 'meal_2'
+                            // [修改] Meal 2 -> M2
+                            el.innerHTML = `<span class="${serviceItemsClickable ? 'service-item-btn block' : 'block opacity-70'}">M2: ${mealCode_2}</span>`;
+                            if(serviceItemsClickable) el.querySelector('span').onclick = e => handleServiceClick(e, seatId, 'meal_2'); 
                             itemsContainer.appendChild(el);
                         }
                         
@@ -711,8 +724,9 @@ function renderSeatLayout() {
                                 const bevIndex = beverages_2.findIndex(b => b === bev);
                                 const el = document.createElement('div');
                                 el.className = `text-sm ${textClass}`;
-                                let styleText = bev.style ? ` (${bev.style})` : '';
-                                el.innerHTML = `<span class="${serviceItemsClickable ? 'service-item-btn block' : 'block opacity-70'}">Drink 2: ${getBeverageShort(bev.name)}${styleText}</span>`;
+                                let styleText = bev.style ? `(${bev.style})` : '';
+                                // [修改] Drink 2 -> DR2
+                                el.innerHTML = `<span class="${serviceItemsClickable ? 'service-item-btn block' : 'block opacity-70'}">DR2: ${getBeverageShort(bev.name)}${styleText}</span>`;
                                 if(serviceItemsClickable) el.querySelector('span').onclick = e => handleServiceClick(e, seatId, 'drink_2', bevIndex);
                                 itemsContainer.appendChild(el);
                             });
@@ -758,7 +772,6 @@ function renderSeatLayout() {
     renderOrderSummaryAggregate();
 }
 
-// [MODIFIED] renderOrderSummaryAggregate
 function renderOrderSummaryAggregate() {
     appElements.summaryList.innerHTML = '';
     const mealCounts = {};
@@ -766,6 +779,7 @@ function renderOrderSummaryAggregate() {
     let totalOrderedSeats = 0;
     let seatsWithOrders = new Set();
 
+    // 1. 統計數量
     orders.forEach(order => {
         if (order.status === 'ORDERED' || order.status === 'DELAYED' || order.status === 'DND') {
             if (order.mealCode || order.mealCode_2 || order.beverages.length > 0 || (order.beverages_2 && order.beverages_2.length > 0)) {
@@ -784,7 +798,6 @@ function renderOrderSummaryAggregate() {
             order.beverages.forEach(bev => {
                 beverageCounts[bev.name] = (beverageCounts[bev.name] || 0) + 1;
             });
-            // [NEW] Add 2nd meal beverages to count
             if(order.beverages_2) {
                 order.beverages_2.forEach(bev => {
                     beverageCounts[bev.name] = (beverageCounts[bev.name] || 0) + 1;
@@ -801,6 +814,7 @@ function renderOrderSummaryAggregate() {
     }
     appElements.emptySummaryMessage.style.display = 'none';
 
+    // --- Meals Summary (保持不變) ---
     const mealSummaryDiv = document.createElement('div');
     mealSummaryDiv.className = 'p-3 bg-gray-700 rounded-lg border-l-4 border-amber-500';
     mealSummaryDiv.innerHTML = `<h3 class="font-bold text-lg text-amber-300 mb-2">Meals Summary (${totalOrderedSeats} seats)</h3>`;
@@ -808,7 +822,6 @@ function renderOrderSummaryAggregate() {
     mealUl.className = 'space-y-1 text-gray-200 text-sm';
     
     const mealSummaryItems = [];
-    
     if (activeMeals_1.length > 0) mealSummaryItems.push(`<li class="font-semibold text-amber-200 mt-1">1st Meal:</li>`);
     activeMeals_1.forEach(meal => {
         if (mealCounts[meal.code]) {
@@ -816,7 +829,6 @@ function renderOrderSummaryAggregate() {
             delete mealCounts[meal.code];
         }
     });
-
     if (activeMeals_2.length > 0) mealSummaryItems.push(`<li class="font-semibold text-amber-200 mt-1">2nd Meal:</li>`);
     activeMeals_2.forEach(meal => {
         if (mealCounts[meal.code]) {
@@ -824,26 +836,75 @@ function renderOrderSummaryAggregate() {
             delete mealCounts[meal.code];
         }
     });
-
     if (Object.keys(mealCounts).length > 0) mealSummaryItems.push(`<li class="font-semibold text-amber-200 mt-1">Special/Other:</li>`);
     for (const mealIdentifier in mealCounts) {
         mealSummaryItems.push(`<li>${mealIdentifier}: ${mealCounts[mealIdentifier]}</li>`);
     }
     mealUl.innerHTML = mealSummaryItems.join('');
-    
     mealSummaryDiv.appendChild(mealUl);
     appElements.summaryList.appendChild(mealSummaryDiv);
 
+
+    // --- Beverages Summary (新增功能：分類排序 + 打勾) ---
     const beverageSummaryDiv = document.createElement('div');
     beverageSummaryDiv.className = 'p-3 bg-gray-700 rounded-lg border-l-4 border-amber-500';
     beverageSummaryDiv.innerHTML = `<h3 class="font-bold text-lg text-amber-300 mb-2">Beverages Summary</h3>`;
+    
     const beverageUl = document.createElement('ul');
-    beverageUl.className = 'space-y-1 text-gray-200 text-sm';
-    ALL_BEVERAGES.forEach(b => {
-        if (beverageCounts[b.full]) beverageUl.innerHTML += `<li>${b.full}: ${beverageCounts[b.full]}</li>`;
-    });
+    beverageUl.className = 'space-y-2 text-gray-200 text-sm';
+
+    // [SORTING LOGIC] 依照 BEVERAGE_CATEGORIES 的原始順序遍歷
+    // 這樣 Water 就會因為在設定檔的第一個而排在最上面，其他類別也會被歸類在一起
+    for (const [category, items] of Object.entries(BEVERAGE_CATEGORIES)) {
+        // 檢查該類別是否有被點到的飲料
+        const activeItems = items.filter(b => beverageCounts[b.full]);
+        
+        if (activeItems.length > 0) {
+            // 加入類別標題 (讓分類更清楚)
+            const catHeader = document.createElement('li');
+            catHeader.className = 'text-xs font-bold text-gray-400 uppercase mt-3 mb-1 border-b border-gray-600 pb-1';
+            catHeader.textContent = category;
+            beverageUl.appendChild(catHeader);
+
+            // 顯示該類別下的飲料
+            activeItems.forEach(b => {
+                const count = beverageCounts[b.full];
+                const isDone = beverageSummaryDoneState[b.full] || false;
+                
+                const li = document.createElement('li');
+                li.className = 'flex items-center justify-between p-2 rounded hover:bg-gray-600 transition cursor-pointer select-none';
+                
+                // 根據狀態設定樣式 (打勾 vs 未完成)
+                const textClass = isDone ? 'text-gray-500 line-through' : 'text-gray-100 font-medium';
+                const iconClass = isDone ? 'text-green-400' : 'text-gray-500';
+                const iconName = isDone ? 'check-circle-2' : 'circle';
+                const bgClass = isDone ? 'bg-gray-800' : '';
+
+                li.className += ` ${bgClass}`;
+                li.innerHTML = `
+                    <span class="${textClass}">${b.full}: ${count}</span>
+                    <button class="focus:outline-none">
+                        <i data-lucide="${iconName}" class="w-5 h-5 ${iconClass}"></i>
+                    </button>
+                `;
+
+                // 點擊事件：切換狀態
+                li.onclick = () => {
+                    beverageSummaryDoneState[b.full] = !beverageSummaryDoneState[b.full];
+                    renderOrderSummaryAggregate(); // 重新渲染以更新狀態
+                    lucide.createIcons();
+                };
+
+                beverageUl.appendChild(li);
+            });
+        }
+    }
+
     beverageSummaryDiv.appendChild(beverageUl);
     appElements.summaryList.appendChild(beverageSummaryDiv);
+    
+    // 確保圖示重新生成
+    setTimeout(() => lucide.createIcons(), 0);
 }
 
 // [NEW] Renders a service summary in the modal
@@ -1129,6 +1190,12 @@ function openOrderModal(seatId) {
     const show = (el, visible) => el.classList.toggle('hidden', !visible);
     const isLongHaul = activeMeals_2.length > 0;
 
+    // --- [BUG FIX: 請加入這兩行] ---
+    // 強制清空容器，防止上一個座位 (如 2K) 的 Service Summary 文字殘留
+    appElements.orderTabContent1.innerHTML = '';
+    appElements.orderTabContent2.innerHTML = '';
+    // --- [BUG FIX 結束] ---
+
     // Restore elements to their default containers (in case they were moved)
     // This ensures a clean state every time the modal opens
     appElements.orderTabContent1.appendChild(appElements.spmlSection);
@@ -1164,29 +1231,25 @@ function openOrderModal(seatId) {
         show(appElements.submitOrderBtn, false);
 
     } else if (!isFullOrderMode && !isServiceComplete) {
-        // Case 2: Service Mode, In Progress -> "Add Beverage(s)" Mode
-        show(appElements.orderPhaseTabs, true);
-        appElements.orderTab1.classList.toggle('active', currentServicePhase === 'MEAL_1');
-        appElements.orderTab2.classList.toggle('active', currentServicePhase === 'MEAL_2');
-        show(appElements.orderTabContent1, currentServicePhase === 'MEAL_1');
-        show(appElements.orderTabContent2, currentServicePhase === 'MEAL_2');
+        // Case 2: Service Mode (In Progress) -> Show Detail Status Dashboard
         
-        // Clear summary and restore elements (needed if we switch from summary view)
-        appElements.orderTabContent1.innerHTML = '';
-        appElements.orderTabContent1.appendChild(appElements.beverageOptionsWrapper);
-        appElements.orderTabContent2.innerHTML = '';
-        appElements.orderTabContent2.appendChild(appElements.beverageOptionsWrapper2);
-
-        setupBeverageOptions(appElements.beverageOptionsContainer, [], 'beverage_1');
-        setupBeverageOptions(appElements.beverageOptionsContainer2, [], 'beverage_2');
+        // 1. 隱藏分頁籤
+        show(appElements.orderPhaseTabs, false);
         
-        show(appElements.spmlSection, false); show(appElements.mealOptionsWrapper, false); show(appElements.dessertDisplay, false); show(appElements.beverageOptionsWrapper, true);
-        show(appElements.spmlSection2, false); show(appElements.mealOptionsWrapper2, false); show(appElements.beverageOptionsWrapper2, true);
+        // 2. 顯示第一頁內容容器 (用來放 Summary)
+        show(appElements.orderTabContent1, true);
+        show(appElements.orderTabContent2, false);
         
-        appElements.submitOrderBtn.textContent = 'Add Beverage(s)';
-        show(appElements.submitOrderBtn, true);
+        // 3. 渲染詳細狀態 (Summary)
+        appElements.orderTabContent1.innerHTML = renderServiceSummary(order);
+        
+        // 4. 控制按鈕顯示：隱藏「確認訂單」，顯示「加點飲料」
+        show(appElements.submitOrderBtn, false);
+        show(appElements.serviceModeActions, true);
+        appElements.serviceModeActions.classList.replace('hidden', 'grid'); // 確保是 grid 排版
 
     } else {
+        // ... Case 3 (Order Mode) ...
         // Case 3: Order Mode (or DND/Pending edit) -> Full Order Form
         show(appElements.orderPhaseTabs, isLongHaul);
         appElements.orderTab1.classList.add('active');
@@ -1274,6 +1337,7 @@ function openOrderModal(seatId) {
         appElements.submitOrderBtn.textContent = 'Confirm Order';
         show(appElements.submitOrderBtn, true);
     }
+
 }
 
 function closeModal() {
@@ -1481,11 +1545,18 @@ function handleSubmitOrder() {
     if (!isFullOrderMode) { // Service mode
         closeModal();
     } else if (isLongHaul && isTab1Active && !orderToUpdate.isSPML) {
-        // Order mode, long haul, tab 1, non-SPML -> switch to tab 2
+       // Order mode, long haul, tab 1, non-SPML -> switch to tab 2
+        
+        // 1. 切換分頁樣式
         appElements.orderTab1.classList.remove('active');
         appElements.orderTab2.classList.add('active');
+        
+        // 2. 切換顯示內容
         show(appElements.orderTabContent1, false);
         show(appElements.orderTabContent2, true);
+        
+        // [新增這行] 強制視窗捲動回到最上方 (表頭)
+        appElements.orderModal.querySelector('.bg-white').scrollTop = 0;
     } else {
         // All other cases (order mode short haul, or tab 2, or SPML) -> close
         closeModal();
@@ -1503,6 +1574,41 @@ function handleServiceClick(event, seatId, itemType, itemIndex = null) {
     });
     appElements.serviceActionModal.classList.remove('hidden');
     document.addEventListener('click', () => appElements.serviceActionModal.classList.add('hidden'), { once: true });
+}
+
+// [NEW] 負責將畫面從「狀態檢視」切換成「加點飲料模式」
+function renderServiceBeverageMenu() {
+    const isLongHaul = activeMeals_2.length > 0;
+    const show = (el, visible) => el.classList.toggle('hidden', !visible);
+    
+    // 隱藏狀態按鈕，顯示確認按鈕
+    show(appElements.serviceModeActions, false);
+    show(appElements.submitOrderBtn, true);
+    appElements.submitOrderBtn.textContent = 'Add Beverage(s)';
+
+    // 依照目前的 Phase 顯示對應內容 (無分頁)
+    show(appElements.orderPhaseTabs, false);
+
+    if (currentServicePhase === 'MEAL_1') {
+        show(appElements.orderTabContent1, true);
+        show(appElements.orderTabContent2, false);
+    } else {
+        show(appElements.orderTabContent1, false);
+        show(appElements.orderTabContent2, true);
+    }
+
+    // 清空並重建飲料選單
+    appElements.orderTabContent1.innerHTML = '';
+    appElements.orderTabContent1.appendChild(appElements.beverageOptionsWrapper);
+    appElements.orderTabContent2.innerHTML = '';
+    appElements.orderTabContent2.appendChild(appElements.beverageOptionsWrapper2);
+
+    setupBeverageOptions(appElements.beverageOptionsContainer, [], 'beverage_1');
+    setupBeverageOptions(appElements.beverageOptionsContainer2, [], 'beverage_2');
+    
+    // 只顯示飲料區塊
+    show(appElements.spmlSection, false); show(appElements.mealOptionsWrapper, false); show(appElements.dessertDisplay, false); show(appElements.beverageOptionsWrapper, true);
+    show(appElements.spmlSection2, false); show(appElements.mealOptionsWrapper2, false); show(appElements.beverageOptionsWrapper2, true);
 }
 
 // [MODIFIED] handleServiceAction
@@ -1997,7 +2103,7 @@ function init() {
     setupInitialSelectors();
     setupInventoryInputs();
     setupSPMLListeners(); // [NEW] Add SPML listeners
-    
+    appElements.btnAddBeverage.addEventListener('click', renderServiceBeverageMenu);
     appElements.routeSelect.addEventListener('change', setupInventoryInputs);
     appElements.aircraftSelect.addEventListener('change', ()=>{});
     appElements.saveInventoryBtn.addEventListener('click', (e) => {
@@ -2056,11 +2162,11 @@ function init() {
     
     appElements.orderModal.addEventListener('click', e => { if (e.target === appElements.orderModal) closeModal(); });
     appElements.delayActionModal.addEventListener('click', e => { if (e.target === appElements.delayActionModal) closeDelayActionModal(); });
-    appElements.dndActionModal.addEventListener('click', e => { if (e.garget === appElements.dndActionModal) closeDndActionModal(); });
+    appElements.dndActionModal.addEventListener('click', e => { if (e.target === appElements.dndActionModal) closeDndActionModal(); });
     appElements.swapSeatsModal.addEventListener('click', e => { if (e.target === appElements.swapSeatsModal) closeSwapModal(); });
     
     setInterval(updateClock, 1000);
     updateClock();
     lucide.createIcons();
-}
-window.onload = init;
+    }
+    window.onload = init;
